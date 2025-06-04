@@ -1,6 +1,6 @@
 #Projeto batalha naval - Raciocínio Algorítmico
 
-import time, ast
+import time
 
 def gerar_tabuleiro(altura, largura):
     matriz = ['🟦'] * altura
@@ -10,7 +10,6 @@ def gerar_tabuleiro(altura, largura):
 
 def printar_tabuleiro(matriz_tabuleiro, largura, altura, coords_h, coords_v):
     linha_matriz = ''
-    # print(coords_h)
 
     for linha in range(altura):
         linha_matriz += coords_v[linha] + '  '
@@ -20,18 +19,28 @@ def printar_tabuleiro(matriz_tabuleiro, largura, altura, coords_h, coords_v):
         print(linha_matriz)
         linha_matriz = ''
     print(coords_h)
-    # for linha in matriz_tabuleiro:
-    #     print(linha)
+
+#Converte posição de letra para numero
+def converter_posicao(pos_v, largura):
+    for i in range(largura):
+        if(coords_v[i] == pos_v):
+            #posição convertida
+            pos_v = i + 1
+            
+    return pos_v
 
 def posicionar_unidades_tabuleiro(tabuleiro, largura, altura, coords_h, coords_v):
-    for i in range(12) : 
+    for i in range(5) : 
         print('Escolha a posição da unidade: ')
-        pos_v = input('Digite uma letra entre A - J')
-        pos_h = input(f'Digite um número entre 1 - {largura}')
+        pos_v = input('Digite uma letra entre A - J: ').upper()
+        pos_v_convertido = converter_posicao(pos_v, largura)
+        pos_h = input(f'Digite um número entre 1 - {largura}: ')
         
+        print(pos_h, pos_v_convertido)
+        
+        tabuleiro[int(pos_h)-1][int(pos_v_convertido)-1] = '🛶'
         
     printar_tabuleiro(tabuleiro, largura, altura, coords_h, coords_v)
-    
     
 #START
 coords_h = ''
