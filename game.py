@@ -1,6 +1,6 @@
 #Projeto batalha naval - Raciocínio Algorítmico
 
-import time
+import time, random
 
 def gerar_tabuleiro(altura, largura):
     matriz = ['🟦'] * altura
@@ -29,19 +29,27 @@ def converter_posicao(pos_v, largura):
             
     return pos_v
 
-def posicionar_unidades_tabuleiro(tabuleiro, largura, altura, coords_h, coords_v):
-    for i in range(5) : 
-        print('Escolha a posição da unidade: ')
-        pos_v = input('Digite uma letra entre A - J: ').upper()
-        pos_v_convertido = converter_posicao(pos_v, largura)
-        pos_h = input(f'Digite um número entre 1 - {largura}: ')
-        
-        print(pos_h, pos_v_convertido)
-        
-        tabuleiro[int(pos_h)-1][int(pos_v_convertido)-1] = '🛶'
-        
-    printar_tabuleiro(tabuleiro, largura, altura, coords_h, coords_v)
+def posicionar_unidades_tabuleiro(jogador, tabuleiro, largura, altura, coords_h, coords_v):
     
+    if(jogador == 'jogador'):
+        for i in range(5) : 
+            print('Escolha a posição da unidade: ')
+            pos_h = input('Digite uma letra entre A - J: ').upper()
+            pos_h_convertido = converter_posicao(pos_h, largura)
+            pos_v = input(f'Digite um número entre 1 - {largura}: ')
+            
+            print(pos_v, pos_h_convertido)
+            
+            tabuleiro[int(pos_v)-1][int(pos_h_convertido)-1] = '🛶'
+            
+        printar_tabuleiro(tabuleiro, largura, altura, coords_h, coords_v)
+    elif(jogador == 'computador') :
+        for i in range(5):
+            pos_h = random.randint(1, largura)
+            pos_v = random.randint(1, altura)
+            tabuleiro[int(pos_v)-1][int(pos_h)-1] = '🛶'
+        printar_tabuleiro(tabuleiro, largura, altura, coords_h, coords_v)
+
 #START
 coords_h = ''
 coords_v = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
@@ -64,7 +72,8 @@ time.sleep(0.8)
 print("Tabuleiro escolhido: \n")
 matriz = gerar_tabuleiro(altura, largura)
 printar_tabuleiro(matriz, largura, altura, coords_h, coords_v)
-posicionar_unidades_tabuleiro(matriz, largura, altura, coords_h, coords_v)
+posicionar_unidades_tabuleiro('jogador', matriz, largura, altura, coords_h, coords_v)
+posicionar_unidades_tabuleiro('computador', matriz, largura, altura, coords_h, coords_v)
 
 #END
 print("Jogo desenvolvido por: Elgson Nascimento, Maria Pietra, Martin Romão, Hikari Hayashida")
