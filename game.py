@@ -2,40 +2,42 @@
 
 import time, random
 
+COORDS_V = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+
+
 def gerar_tabuleiro(altura, largura):
     matriz = ['🟦'] * altura
     for linha in range(altura):
         matriz[linha] = ['🟦'] * largura
     return matriz
 
-def printar_tabuleiro(matriz_tabuleiro, largura, altura, coords_h, coords_v):
-    linha_matriz = ''
 
+def printar_tabuleiro(matriz_tabuleiro, largura, altura, coords_h, COORDS_V):
     for linha in range(altura):
-        linha_matriz += coords_v[linha] + '  '
+        linha_matriz += COORDS_V[linha] + '  '
         for coluna in range(largura):
             linha_matriz += matriz_tabuleiro[linha][coluna] + '  '
         linha_matriz += '  '
         print(linha_matriz)
-        linha_matriz = ''
     print(coords_h)
 
+
 #Converte posição de letra para numero
-def converter_posicao(pos_v, largura):
+def converter_posicao(pos_v, largura, coords_v):
     for i in range(largura):
         if(coords_v[i] == pos_v):
             #posição convertida
             pos_v = i + 1
-            
     return pos_v
+
 
 def posicionar_unidades_tabuleiro(jogador, tabuleiro, largura, altura, coords_h, coords_v):
     
-    if(jogador == 'jogador'):
+    if (jogador == 'jogador'):
         for i in range(5) : 
             print('Escolha a posição da unidade: ')
             pos_h = input('Digite uma letra entre A - J: ').upper()
-            pos_h_convertido = converter_posicao(pos_h, largura)
+            pos_h_convertido = converter_posicao(pos_h, largura, coords_v)
             pos_v = input(f'Digite um número entre 1 - {largura}: ')
             
             print(pos_v, pos_h_convertido)
@@ -43,7 +45,7 @@ def posicionar_unidades_tabuleiro(jogador, tabuleiro, largura, altura, coords_h,
             tabuleiro[int(pos_v)-1][int(pos_h_convertido)-1] = '🛶'
             
         printar_tabuleiro(tabuleiro, largura, altura, coords_h, coords_v)
-    elif(jogador == 'computador') :
+    elif (jogador == 'computador') :
         for i in range(5):
             pos_h = random.randint(1, largura)
             pos_v = random.randint(1, altura)
@@ -52,7 +54,7 @@ def posicionar_unidades_tabuleiro(jogador, tabuleiro, largura, altura, coords_h,
 
 #START
 coords_h = ''
-coords_v = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+# COORDS_V = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 print("Bem-vindo ao jogo batalha naval")
 time.sleep(0.8)
 
@@ -70,10 +72,11 @@ altura = 10
 
 time.sleep(0.8)
 print("Tabuleiro escolhido: \n")
-matriz = gerar_tabuleiro(altura, largura)
-printar_tabuleiro(matriz, largura, altura, coords_h, coords_v)
-posicionar_unidades_tabuleiro('jogador', matriz, largura, altura, coords_h, coords_v)
-posicionar_unidades_tabuleiro('computador', matriz, largura, altura, coords_h, coords_v)
+tabuleiro_jogador = gerar_tabuleiro(altura, largura)
+printar_tabuleiro(tabuleiro_jogador, largura, altura, coords_h, COORDS_V)
+tabuleiro_computador = gerar_tabuleiro(altura, largura)
+posicionar_unidades_tabuleiro('jogador', tabuleiro_jogador, largura, altura, coords_h, COORDS_V)
+posicionar_unidades_tabuleiro('computador', tabuleiro_computador, largura, altura, coords_h, COORDS_V)
 
 #END
 print("Jogo desenvolvido por: Elgson Nascimento, Maria Pietra, Martin Romão, Hikari Hayashida")
