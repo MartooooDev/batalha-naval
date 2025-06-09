@@ -141,6 +141,7 @@ posicionar_unidades_tabuleiro('jogador', tabuleiro_jogador, largura, altura, coo
 print('')
 posicionar_unidades_tabuleiro('computador', tabuleiro_computador, largura, altura, coords_h, COORDS_V)
 
+
 while True:
     print("\nSeu tabuleiro:")
     printar_tabuleiro(tabuleiro_jogador, largura, altura, coords_h, COORDS_V)
