@@ -47,7 +47,7 @@ def printar_tabuleiro(matriz_tabuleiro, largura, altura, coords_h, coords_v):
 
 #Função que converte posição de letra para numero
 def converter_posicao(pos_v, largura, coords_v):
-    for i in range(largura):
+    for i in range(altura):
         if(coords_v[i] == pos_v):
             #posição convertida
             pos_v = i + 1
@@ -59,10 +59,11 @@ def posicionar_unidades_tabuleiro(jogador, tabuleiro, largura, altura, coords_v)
     if (jogador == 'jogador'):
         for i in range(5) : 
             print('Escolha a posição da unidade: ')
-            pos_v = input('Digite uma letra entre A - J: ').upper()
+            pos_v = input('Digite uma letra entre A - J: ').upper().strip()
             pos_v_convertido = converter_posicao(pos_v, largura, coords_v)
-            pos_h = input(f'Digite um número entre 1 - {largura}: ')
-            
+            pos_h = input(f'Digite um número entre 1 - {largura}: ').upper().strip()
+            time.sleep(0.5)
+
             print(pos_h, pos_v_convertido)
             
             tabuleiro[int(pos_v_convertido)-1][int(pos_h)-1] = '🛶'
@@ -146,8 +147,8 @@ def atacar(tabuleiro_alvo, largura, altura, coords_v, jogador):
     
 #START
 coords_h = ''
-# COORDS_V = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-print("Bem-vindo ao jogo batalha naval")
+COORDS_V = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+print("🚩Bem-vindo ao jogo batalha naval")
 time.sleep(0.8)
 
 tabuleiro = int(input("Qual tamanho de tabuleiro deseja utilizar para essa partida?\n 1- 5x10\n 2- 10x10\n"))
@@ -159,7 +160,7 @@ elif tabuleiro == 2:
     coords_h = '    1   2   3   4   5   6   7   8   9   10'
 else :
     print("Valor inválido")
-    
+
 altura = 10
 
 time.sleep(0.8)
