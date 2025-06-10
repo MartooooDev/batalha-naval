@@ -2,21 +2,36 @@
 
 import time, random, os, platform
 
+#Coordenadas verticais (qtde sempre é 10, então definido como variável constante no código)
 COORDS_V = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 
+#Limpeza de terminal p/ windows e linux
 def limpar_terminal():
     if platform.system() == "Windows":
         os.system('cls')
     else:
         os.system('clear')
 
+#Função de gerar tabuleiro vazio
 def gerar_tabuleiro(altura, largura):
     matriz = ['🟦'] * altura
     for linha in range(altura):
         matriz[linha] = ['🟦'] * largura
     return matriz
 
+#Função para printar tabuleiro sem mostrar as coordenadas com unidades (usado para printar o campo do computador durante o ataque do jogador)
+def printar_tabuleiro_oculto(matriz_tabuleiro, largura, altura, coords_h, coords_v):
+    for linha in range(altura):
+        linha_matriz = coords_v[linha] + '  '
+        for coluna in range(largura):
+            celula = matriz_tabuleiro[linha][coluna]
+            if celula == '🛶':
+                celula = '🟦'
+            linha_matriz += celula + '  '
+        print(linha_matriz)
+    print(coords_h)
 
+#Função para printar tabuleiro completo com unidades posicionadas (Para debug ou para o jogador ver seu próprio campo)
 def printar_tabuleiro(matriz_tabuleiro, largura, altura, coords_h, coords_v):
     linha_matriz = ''
 
@@ -30,7 +45,7 @@ def printar_tabuleiro(matriz_tabuleiro, largura, altura, coords_h, coords_v):
     print(coords_h)
 
 
-#Converte posição de letra para numero
+#Função que converte posição de letra para numero
 def converter_posicao(pos_v, largura, coords_v):
     for i in range(largura):
         if(coords_v[i] == pos_v):
@@ -38,8 +53,8 @@ def converter_posicao(pos_v, largura, coords_v):
             pos_v = i + 1
     return pos_v
 
-
-def posicionar_unidades_tabuleiro(jogador, tabuleiro, largura, altura, coords_h, coords_v):
+#Função para posicionamento de unidades
+def posicionar_unidades_tabuleiro(jogador, tabuleiro, largura, altura, coords_v): #,coords_h se precisar printar tabuleiro completo
     
     if (jogador == 'jogador'):
         for i in range(5) : 
@@ -52,7 +67,7 @@ def posicionar_unidades_tabuleiro(jogador, tabuleiro, largura, altura, coords_h,
             
             tabuleiro[int(pos_v_convertido)-1][int(pos_h)-1] = '🛶'
             
-        printar_tabuleiro(tabuleiro, largura, altura, coords_h, coords_v)
+        # printar_tabuleiro(tabuleiro, largura, altura, coords_h, coords_v)
     elif (jogador == 'computador') :
         for i in range(5):
             pos_v = random.randint(1, largura)
@@ -61,11 +76,12 @@ def posicionar_unidades_tabuleiro(jogador, tabuleiro, largura, altura, coords_h,
         # printar_tabuleiro(tabuleiro, largura, altura, coords_h, coords_v)
 
 
+#Função para contar unidades restantes no tabuleiro
 def contar_barcos(tabuleiro):
     """Conta quantos barcos restam no tabuleiro."""
     return sum(linha.count('🛶') for linha in tabuleiro)
 
-
+#Função para ataque do jogador e computador
 def atacar(tabuleiro_alvo, largura, altura, coords_v, jogador):
     while True:
         if jogador == "Jogador":
@@ -89,27 +105,41 @@ def atacar(tabuleiro_alvo, largura, altura, coords_v, jogador):
             break
 
     if tabuleiro_alvo[linha][coluna] == '🛶':
-        for frame in ["💣", "💥", "🔥"]:
-            tabuleiro_alvo[linha][coluna] = frame
+        for icone in ["💣", "💥", "🔥"]:
+            tabuleiro_alvo[linha][coluna] = icone
             limpar_terminal()
             print(f"Ataque do {jogador}.")
-            printar_tabuleiro(tabuleiro_alvo, largura, altura, '', coords_v)
+            if (jogador == 'Jogador') :
+                printar_tabuleiro_oculto(tabuleiro_alvo, largura, altura, '', coords_v)
+            else:
+                printar_tabuleiro(tabuleiro_alvo, largura, altura, coords_h, COORDS_V)
             time.sleep(0.7)
         tabuleiro_alvo[linha][coluna] = '💥'
         limpar_terminal()
-        printar_tabuleiro(tabuleiro_alvo, largura, altura, '', coords_v)
+        if (jogador == 'Jogador') :
+            printar_tabuleiro_oculto(tabuleiro_alvo, largura, altura, '', coords_v)
+        else:
+            printar_tabuleiro(tabuleiro_alvo, largura, altura, coords_h, COORDS_V)
+        limpar_terminal()
         print(f"{jogador} acertou um barco!")
         return True
     else:
-        for frame in ["💣", "🌊", "❌"]:
-            tabuleiro_alvo[linha][coluna] = frame
+        for icone in ["💣", "🌊", "❌"]:
+            tabuleiro_alvo[linha][coluna] = icone
             limpar_terminal()
             print(f"Ataque do {jogador}.")
-            printar_tabuleiro(tabuleiro_alvo, largura, altura, '', coords_v)
+            if (jogador == 'Jogador') :
+                printar_tabuleiro_oculto(tabuleiro_alvo, largura, altura, '', coords_v)
+            else:
+                printar_tabuleiro(tabuleiro_alvo, largura, altura, coords_h, COORDS_V)
             time.sleep(0.7)
         tabuleiro_alvo[linha][coluna] = '❌'
         limpar_terminal()
-        printar_tabuleiro(tabuleiro_alvo, largura, altura, '', coords_v)
+        if (jogador == 'Jogador') :
+                printar_tabuleiro_oculto(tabuleiro_alvo, largura, altura, '', coords_v)
+        else:
+            printar_tabuleiro(tabuleiro_alvo, largura, altura, coords_h, COORDS_V)
+        limpar_terminal()
         print(f"{jogador} errou o ataque.")
         return False
     
@@ -137,16 +167,18 @@ print("Tabuleiro escolhido: \n")
 tabuleiro_jogador = gerar_tabuleiro(altura, largura)
 printar_tabuleiro(tabuleiro_jogador, largura, altura, coords_h, COORDS_V)
 tabuleiro_computador = gerar_tabuleiro(altura, largura)
-posicionar_unidades_tabuleiro('jogador', tabuleiro_jogador, largura, altura, coords_h, COORDS_V)
+posicionar_unidades_tabuleiro('jogador', tabuleiro_jogador, largura, altura, COORDS_V) #, coords_h antes de COORDS_V para ver unidades
 print('')
-posicionar_unidades_tabuleiro('computador', tabuleiro_computador, largura, altura, coords_h, COORDS_V)
+posicionar_unidades_tabuleiro('computador', tabuleiro_computador, largura, altura, COORDS_V) #, coords_h antes de COORDS_V para ver unidades
 
 
+#Jogo em loop até um dos jogadores vencer
 while True:
+    
     print("\nSeu tabuleiro:")
     printar_tabuleiro(tabuleiro_jogador, largura, altura, coords_h, COORDS_V)
     print("\nTabuleiro do computador:")
-    printar_tabuleiro(tabuleiro_computador, largura, altura, coords_h, COORDS_V)
+    printar_tabuleiro_oculto(tabuleiro_computador, largura, altura, coords_h, COORDS_V)
 
     print("\nSua vez de atacar!")
     atacar(tabuleiro_computador, largura, altura, COORDS_V, "Jogador")
