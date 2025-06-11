@@ -1,4 +1,5 @@
 #Projeto batalha naval - Raciocínio Algorítmico
+#Códigos feitos majoritariamente por meio da extensão Live Share
 
 import time, random, os, platform
 
@@ -64,7 +65,7 @@ def posicionar_unidades_tabuleiro(jogador, tabuleiro, largura, altura, coords_v)
             pos_h = input(f'Digite um número entre 1 - {largura}: ').upper().strip()
             time.sleep(0.5)
 
-            print(pos_h, pos_v_convertido)
+            # print(pos_h, pos_v_convertido)
             
             tabuleiro[int(pos_v_convertido)-1][int(pos_h)-1] = '🛶'
             
